@@ -1,9 +1,13 @@
 import bpy
+import os
 import json
 
 c = bpy.context
-BASE_DIR = "/home/brian/hijackTools/hijackTools/assets"
-PREFAB_DIR = "/prefabs"
+#BASE_DIR = "/home/brian/Hijack"
+#PREFAB_DIR = "/prefabs"
+BASE_DIR = ""
+PREFAB_DIR = ""
+CONFIG_DIR = "/home/brian/Hijack/config.json"
        
 class AddPrefab(bpy.types.Operator):
     bl_label = "add a prefab"
@@ -28,7 +32,15 @@ class ExportJsonPrefab(bpy.types.Operator):
     bl_label = "Export Prefab Hijack"
     
     def execute(self, context):
-        print(json.dumps(getPrefabData(bpy.context.selected_objects[0])))
+        prefabData = getPrefabData(bpy.context.selected_objects[0])
+        output = json.dumps(prefabData)
+        print(output)
+        jsonFilePath = "%s%s/%s.json" %(BASE_DIR, PREFAB_DIR, prefabData['name'])
+        print(jsonFilePath)
+        outFile = open(jsonFilePath, 'w+')
+        outFile.write(output)
+        outFile.close()
+        
         return {'FINISHED'}
     
 def getTypeName(obj):
@@ -76,6 +88,17 @@ def getPrefabData(obj):
     #set load children
     #set component properties
 
+def loadConfig():
+    configDataStr = ""
+    with open(CONFIG_DIR, 'r') as f:
+        for line in f:
+            configDataStr += line
+    configData = json.loads(configDataStr)
+    global BASE_DIR
+    global PREFAB_DIR
+    PREFAB_DIR = configData['exportConfig']['PREFAB_DIR']    
+    BASE_DIR = configData['exportConfig']['BASE_DIR']
+
 def getFilePath(obj):
     #for linked file:
     fpath = ""
@@ -91,6 +114,7 @@ def getFilePath(obj):
 def register():
     bpy.utils.register_class(ExportJsonPrefab)
     bpy.utils.register_class(AddPrefab)
+    loadConfig()
 
 def unregister():
     bpy.utils.unregister_class(ExportJsonPrefab)
