@@ -58,9 +58,14 @@ def getComponents(obj):
 def getPrefabData(obj):
     if getTypeName(obj) == 'PREFAB':
         aPrefab = {"name":obj.name}
+        obj.rotation_mode = 'QUATERNION'
+        aPrefab['pos'] = [obj.location.x, obj.location.y, obj.location.z]
+        aPrefab['rot'] = [obj.rotation_quaternion.w, obj.rotation_quaternion.x, obj.rotation_quaternion.y, obj.rotation_quaternion.z]
+        aPrefab['scale'] = [obj.scale.x, obj.scale.y, obj.scale.z]
         aPrefab['components'] = getComponents(obj)
         prefabChildren=[]
         for child in obj.children:
+            child.rotation_mode = 'QUATERNION'
             childobj = {"name":child.name,"components": getComponents(child), "pos": [child.location.x, child.location.y, child.location.z], "rot": [child.rotation_quaternion.w, child.rotation_quaternion.x, child.rotation_quaternion.y, child.rotation_quaternion.z], "scale": [child.scale.x, child.scale.y, child.scale.z]}
             prefabChildren.append(childobj)
         aPrefab['children'] = prefabChildren
