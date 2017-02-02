@@ -2,12 +2,14 @@ import bpy
 import os
 import json
 
+#convienience variable
 c = bpy.context
-#BASE_DIR = "/home/brian/Hijack"
-#PREFAB_DIR = "/prefabs"
+
+CONFIG_DIR = "./config.json"
+
+#These varaibles are setup in the config file located  in the above directory
 BASE_DIR = ""
 PREFAB_DIR = ""
-CONFIG_DIR = "/home/brian/Hijack/config.json"
        
 class AddPrefab(bpy.types.Operator):
     bl_label = "add a prefab"

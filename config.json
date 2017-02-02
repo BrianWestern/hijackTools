@@ -1,0 +1,11 @@
+{
+    "exportConfig": {
+        "BASE_DIR": "/home/brian/hijackTools/hijackTools",
+        "PREFAB_DIR": "/prefabs",
+	"MESHES_DIR": "/meshes",
+	"CATEGORIES": [
+             "characters",
+             "props"
+         ]
+     }
+}
